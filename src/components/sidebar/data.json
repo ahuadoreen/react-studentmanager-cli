@@ -1,0 +1,31 @@
+[{
+  "icon": "home",
+  "key": "overview",
+  "label": "总览",
+  "url": "/home/overview"
+}, {
+  "icon": "user",
+  "key": "sub-res",
+  "label": "师生管理中心",
+  "children": [{
+    "key": "student",
+    "label": "学生管理",
+    "url": "/home/student"
+  }, {
+    "key": "class",
+    "label": "班级管理",
+    "url": "/home/class"
+  }, {
+    "key": "gradecourse",
+    "label": "年级课程管理",
+    "url": "/home/gradeCourse"
+  }, {
+    "key": "teacher",
+    "label": "教师管理",
+    "url": "/home/teacher"
+  }, {
+    "key": "subject",
+    "label": "科目管理",
+    "url": "/home/subject"
+  }]
+}]
