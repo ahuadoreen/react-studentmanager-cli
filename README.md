@@ -1,3 +1,4 @@
+基于react前端框架和ant design开发的学生管理系统的前端部分，后台代码可查看springboot加mybatis版本的https://github.com/ahuadoreen/studentmanager
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
