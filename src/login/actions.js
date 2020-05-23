@@ -1,12 +1,14 @@
 import { actions as loadingActions } from '../components/loading/index';
 import * as Fetch from '../util/fetch';
 import * as LocalStorage from '../util/localstorage';
-const qs = require('qs');
 
 export const login = (formVal, props) => {
   return (dispatch) => {
     dispatch(loadingActions.showLoading());
-    Fetch.post('login', qs.stringify(formVal)).then((response) => {
+    const formData = new FormData();
+    formData.append('username', formVal.username);
+    formData.append('password', formVal.password);
+    Fetch.post('login', formData).then((response) => {
       dispatch(loadingActions.hideLoading());
 
       if (response) {

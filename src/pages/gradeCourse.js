@@ -90,8 +90,10 @@ class GradeCourse extends React.Component {
                 console.log(item)
                 row.subjectNames = row.subjectIds.map(d => d.label)
                 row.subjectIds = row.subjectIds.map(d => d.key)
-                Fetch.post('gradeCourse/editGradeCourse', qs.stringify({grade: item.grade, subjectIds: row.subjectIds},
-                    { indices: false })).then((response) => {
+                const formData = new FormData();
+                formData.append('grade', item.grade);
+                formData.append('subjectIds', row.subjectIds);
+                Fetch.post('gradeCourse/editGradeCourse', formData).then((response) => {
                     // dispatch(loadingActions.hideLoading());
 
                     if (response) {
@@ -123,7 +125,9 @@ class GradeCourse extends React.Component {
     }
 
     handleDelete = key => {
-        Fetch.post('gradeCourse/deleteGradeCourse', qs.stringify({grade: key})).then((response) => {
+        const formData = new FormData();
+        formData.append('grade', key);
+        Fetch.post('gradeCourse/deleteGradeCourse', formData).then((response) => {
             // dispatch(loadingActions.hideLoading());
 
             if (response) {

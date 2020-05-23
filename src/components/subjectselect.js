@@ -8,10 +8,8 @@ const { Option } = Select;
 class SubjectSelect extends React.Component {
     constructor(props) {
         super(props);
-        const value = props.value || [];
         this.state = {
             data: [],
-            value: value,
             fetching: false
         };
     }
@@ -36,7 +34,6 @@ class SubjectSelect extends React.Component {
 
     handleChange = value => {
         this.setState({
-            value: value,
             fetching: false,
         });
         this.triggerChange(value);
@@ -51,7 +48,8 @@ class SubjectSelect extends React.Component {
     };
 
     render() {
-        const { fetching, data, value } = this.state;
+        const { fetching } = this.state;
+        const value = this.props.value || [];
         const options = this.state.data.map(d => <Option key={d.id}>{d.name}</Option>);
         return (
             <Select

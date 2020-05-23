@@ -40,6 +40,7 @@ const HomePage = (props) => {
           <Route path="/home/addSubject" component={SubjectForm} />
           <Route path="/home/teacher" component={Teacher} />
           <Route path="/home/addTeacher" component={TeacherForm} />
+          <Route path="/home/editTeacher/:id" component={TeacherForm} />
           <Route path="/home/gradeCourse" component={GradeCourse} />
           <Route path="/home/class" component={Class} />
           <Route path="/home/addClass" component={ClassForm} />

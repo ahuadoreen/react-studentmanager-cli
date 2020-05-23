@@ -2,7 +2,8 @@ import React from 'react';
 import { Form, Input, Button, PageHeader } from 'antd/lib/index';
 import * as Fetch from "../../util/fetch";
 import { actions as loadingActions } from '../../components/loading';
-const qs = require('qs');
+import createHistory from 'history/createBrowserHistory';
+const history = createHistory();
 
 class App extends React.Component {
 	title = '新增科目';
@@ -12,11 +13,13 @@ class App extends React.Component {
 			if (!err) {
 				console.log('Received values of form: ', values);
 				loadingActions.showLoading();
-				Fetch.post('subject/addSubject', qs.stringify({name: values.name})).then((response) => {
+				const formData = new FormData();
+				formData.append('name', values.name);
+				Fetch.post('subject/addSubject', formData).then((response) => {
 					loadingActions.hideLoading();
 					if (response) {
 						console.log(response);
-						window.history.back();
+						history.goBack();
 					}
 				});
 			}
@@ -28,7 +31,7 @@ class App extends React.Component {
 		return (
 			<div>
 				<PageHeader
-					onBack={() => window.history.back()}
+					onBack={() => history.goBack()}
 					title={this.title}
 				/>
 				<Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }} onSubmit={this.handleSubmit}>

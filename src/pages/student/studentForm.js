@@ -13,8 +13,14 @@ class App extends React.Component {
             if (!err) {
                 console.log('Received values of form: ', values);
                 loadingActions.showLoading();
-                values.classId = values.classId.key;
-                Fetch.post('student/addStudent', qs.stringify(values, { indices: false })).then((response) => {
+                // values.classId = values.classId.key;
+                const formData = new FormData();
+                formData.append('sno', values.sno);
+                formData.append('name', values.name);
+                formData.append('gender', values.gender);
+                formData.append('age', values.age);
+                formData.append('classId', values.classId.key);
+                Fetch.post('student/addStudent', formData).then((response) => {
                     loadingActions.hideLoading();
                     if (response) {
                         console.log(response);

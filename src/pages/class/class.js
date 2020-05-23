@@ -103,8 +103,12 @@ class Class extends React.Component {
             const index = newData.findIndex((_, index) => key === index);
             if (index > -1) {
                 const item = newData[index];
-                Fetch.post('class/editClass', qs.stringify({id: item.id, className: row.className, grade: row.grade,
-                    mainTeacherId: row.mainTeacher.key}, { indices: false })).then((response) => {
+                const formData = new FormData();
+                formData.append('id', item.id);
+                formData.append('className', row.className);
+                formData.append('grade', row.grade);
+                formData.append('mainTeacherId', row.mainTeacher.key);
+                Fetch.post('class/editClass', formData).then((response) => {
                     // dispatch(loadingActions.hideLoading());
 
                     if (response) {
@@ -189,14 +193,20 @@ class Class extends React.Component {
     };
 
     handleDelete = key => {
-        Fetch.post('class/deleteClass', qs.stringify({id: key})).then((response) => {
+        const formData = new FormData();
+        formData.append('id', key);
+        Fetch.post('class/deleteClass', formData).then((response) => {
             // dispatch(loadingActions.hideLoading());
 
             if (response) {
                 console.log(response);
+                let current = this.state.pagination.current;
+                if(current == undefined){
+                    current = 1
+                }
                 this.fetch({
                     size: this.state.pagination.pageSize,
-                    index: this.state.pagination.current - 1,
+                    index: current - 1,
                     name: ''
                 });
             }

@@ -3,9 +3,11 @@ import thunk from 'redux-thunk';
 import { routerReducer } from 'react-router-redux';
 import resetEnhancer from './enhancer/reset.js';
 import { reducer as loadingReducer } from './components/loading';
+import listReducer from './util/reducer';
 
 const originalReducers = {
   loading: loadingReducer,
+  listState: listReducer,
   routing: routerReducer
 };
 const reducer = combineReducers(originalReducers);

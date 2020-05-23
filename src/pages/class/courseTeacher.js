@@ -78,8 +78,11 @@ class CourseTeacher extends React.Component {
             const index = newData.findIndex((_, index) => key === index);
             if (index > -1) {
                 const item = newData[index];
-                Fetch.post('class/editCourseTeacher', qs.stringify({id: this.props.match.params.id, subjectId: item.course.subject.id,
-                    teacherId: row.teacher.key}, { indices: false })).then((response) => {
+                const formData = new FormData();
+                formData.append('id', this.props.match.params.id);
+                formData.append('subjectId', item.course.subject.id);
+                formData.append('teacherId', row.teacher.key);
+                Fetch.post('class/editCourseTeacher', formData).then((response) => {
                     // dispatch(loadingActions.hideLoading());
 
                     if (response) {

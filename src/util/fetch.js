@@ -33,9 +33,7 @@ const request = (url, config) => {
 const header = () =>{
   let token = LocalStorage.get('token');
   let username = LocalStorage.get('username');
-  return token ? {'username': username, 'token': token, 'content-type': 'application/x-www-form-urlencoded'} : {
-    'content-type': 'application/x-www-form-urlencoded'
-  }
+  return token ? {'username': username, 'token': token} : {}
 }
 const baseURL = '/studentmanage/'
 

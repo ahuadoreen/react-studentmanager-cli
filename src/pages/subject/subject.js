@@ -78,7 +78,10 @@ class Subject extends React.Component {
       const index = newData.findIndex((_, index) => key === index);
       if (index > -1) {
         const item = newData[index];
-        Fetch.post('subject/editSubject', qs.stringify({id: item.id, name: row.name})).then((response) => {
+        const formData = new FormData();
+        formData.append('id', item.id);
+        formData.append('name', row.name);
+        Fetch.post('subject/editSubject', formData).then((response) => {
           // dispatch(loadingActions.hideLoading());
 
           if (response) {
@@ -162,14 +165,20 @@ class Subject extends React.Component {
   };
 
   handleDelete = key => {
-    Fetch.post('subject/deleteSubject', qs.stringify({id: key})).then((response) => {
+    const formData = new FormData();
+    formData.append('id', key);
+    Fetch.post('subject/deleteSubject', formData).then((response) => {
       // dispatch(loadingActions.hideLoading());
 
       if (response) {
         console.log(response);
+        let current = this.state.pagination.current;
+        if(current == undefined){
+          current = 1
+        }
         this.fetch({
           size: this.state.pagination.pageSize,
-          index: this.state.pagination.current - 1,
+          index: current - 1,
           name: ''
         });
       }

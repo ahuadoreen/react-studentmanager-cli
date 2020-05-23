@@ -2,6 +2,9 @@ import React from 'react';
 import {Table, Popconfirm, Divider, Input, Button, Icon, PageHeader} from 'antd';
 import * as Fetch from "../../util/fetch";
 import EditableCell, {EditableContext, EditableFormRow} from "../../components/editablecell";
+import {Link} from "react-router-dom";
+import {clearListState, saveListState} from "../../util/actions";
+import {connect} from "react-redux";
 const qs = require('qs');
 
 class Teacher extends React.Component {
@@ -68,7 +71,8 @@ class Teacher extends React.Component {
               <a onClick={() => this.cancel(index)}>取消</a>
             </span>
           ) : (
-              <span><a disabled={editingKey !== ''} onClick={() => this.edit(index)}>
+              <span>
+                <a disabled={editingKey !== ''} onClick={() => this.edit(index)}>
           编辑
         </a>
         <Divider type="vertical"/>
@@ -122,15 +126,32 @@ class Teacher extends React.Component {
   }
 
   edit(key) {
-    this.setState({ editingKey: key });
+    // this.setState({ editingKey: key });
+    saveListState({
+      listData: this.state.data,
+      pagination: this.state.pagination
+    })()
+    this.props.history.push('/home/editTeacher/' + this.state.data[key].id);
   }
 
   componentDidMount() {
-    this.fetch({
-      size: 5,
-      index: 0,
-      name: ''
-    });
+    this.state.pagination = this.props.listState.pagination
+    if (this.props.listState.listData.length > 0) {
+      this.setState({
+        data: this.props.listState.listData
+      })
+    } else {
+      let current = this.state.pagination.current;
+      if(current == undefined){
+        current = 1
+      }
+      this.fetch({
+        size: 5,
+        index: current - 1,
+        name: ''
+      });
+    }
+    clearListState()
   }
 
   getColumnSearchProps = dataIndex => ({
@@ -186,14 +207,20 @@ class Teacher extends React.Component {
   };
 
   handleDelete = key => {
-    Fetch.post('teacher/deleteTeacher', qs.stringify({id: key})).then((response) => {
+    const formData = new FormData();
+    formData.append('id', key);
+    Fetch.post('teacher/deleteTeacher', formData).then((response) => {
       // dispatch(loadingActions.hideLoading());
 
       if (response) {
         console.log(response);
+        let current = this.state.pagination.current;
+        if(current == undefined){
+          current = 1
+        }
         this.fetch({
           size: this.state.pagination.pageSize,
-          index: this.state.pagination.current - 1,
+          index: current - 1,
           name: ''
         });
       }
@@ -297,4 +324,9 @@ class Teacher extends React.Component {
     );
   }
 }
-export default Teacher;
+let mapStateToProps = (state) => ({
+  listState: {...state.listState}
+})
+
+let mapDispatchToProps = (dispatch) => ({})
+export default connect(mapStateToProps, mapDispatchToProps)(Teacher);
